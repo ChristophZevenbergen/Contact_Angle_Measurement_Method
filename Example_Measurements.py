@@ -10,11 +10,7 @@ import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-# Edit to folder of where the library file is located. 
-file_dir = '/home/usuario/Documentos/GitHub/Sphere Regression'
-sys.path.append(file_dir)
 import Lib_ContactAngle as esf
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
 
@@ -45,7 +41,8 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
     # - [16] Number of points for sphere regression
 
 
-
+# Edit to folder of where the library file is located. 
+file_dir = '/home/usuario/Documentos/GitHub/Sphere_regression'
 #Input file .raw unisigned char
 input_file = f'{file_dir}/Bentheimer_0125_A60.raw'
 
@@ -75,7 +72,7 @@ Measurements = esf.MeasureAngle(npimg)
 
 Reference_measurements = np.load(f'{file_dir}/measurements.npy')
 
-if np.array_equal(Measurements, Reference_measurements):
+if np.allclose(Measurements, Reference_measurements, rtol=0, atol=1e-14):
     print('Measurements taken successfully.')
 else:
-    print('Measurements do not match the reference. Please check your Python and library versions.')
+    raise ValueError('Measurements do not match the reference.')

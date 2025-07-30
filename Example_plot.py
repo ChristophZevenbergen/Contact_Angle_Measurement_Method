@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 16 16:15:06 2025
+Created on Wed Jul 30 13:51:46 2025
 
 @author: usuario
 """
@@ -10,11 +10,9 @@ import sys
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-# Edit to folder of where the library file is located. 
-file_dir = '/home/usuario/Documentos/GitHub/Sphere Regression'
-sys.path.append(file_dir)
 import Lib_ContactAngle as esf
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+import pyvista as pv
+
 
 
 
@@ -45,6 +43,8 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
     # - [16] Number of points for sphere regression
 
 
+# Edit to folder of where the library file is located. 
+file_dir = '/home/usuario/Documentos/GitHub/Sphere_regression/Contact_Angle_Measurement_Method'
 
 #Input file .raw unisigned char
 input_file = f'{file_dir}/Bentheimer_0125_A60.raw'
@@ -59,25 +59,14 @@ size_z = 125
 R1 = 5 # Plane regression subvolume radius
 alpha = 0.5 # Sphere regression subvbolume radius scaling factor
 
-# Filtering of the measurements
-# Default Values
-Max_residual_plane = 0.4
-Max_residual_sphere = 0.5
-Min_points_plane = 0.5
-Min_points_sphere = 20 
-
 
 #Read image as numpy three dimanesional array
 npimg = np.fromfile(input_file, dtype=np.uint8)
 imageSize = (size_x, size_y, size_z)
 npimg = npimg.reshape(imageSize)
 
-# Plot a slice of the porous media
-plt.imshow(npimg[:,:,50])
 
-
-# Main Function Measure the contact Angle
-Measurements = esf.MeasureAngle(npimg)
+Measurements = np.load(f'{file_dir}/measurements.npy')
 
 
 # Plot a single measurments (only the regressions)
@@ -86,13 +75,18 @@ esf.ViewRegression(Measurements[:,1000], npimg)
 # Plot a single measurments (regression with a subvolume of the original image)
 esf.ViewMeasurement(Measurements[:,1000], npimg, size_x, alpha = 0.5)
 
-
 # Analyse contact angle measurements
 esf.ResultAnalysis(Measurements)
+
+# Filtering of the measurements
+# Default Values
+Max_residual_plane = 0.4
+Max_residual_sphere = 0.5
+Min_points_plane = 0.5
+Min_points_sphere = 20 
 
 # Filter Measurements
 Filtered_Measurements = esf.FilterMeasurements(Measurements, R1 = R1, mpe = Min_points_sphere, mpp = Min_points_plane, maxerr_e = Max_residual_sphere, maxerr_p = Max_residual_plane)
 
 # Analyse contact angle of filtered measurements
 esf.ResultAnalysis(Filtered_Measurements)
-

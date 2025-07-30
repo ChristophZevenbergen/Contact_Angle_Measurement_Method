@@ -1,0 +1,9 @@
+name: libca
+channels:
+  - defaults
+dependencies:
+  - python=3.10.12
+  - pyvista=0.42.3
+  - porespy==2.3.0
+  - conda-forge::scipy=1.8.0
+prefix: /home/usuario/miniconda3/envs/libca
