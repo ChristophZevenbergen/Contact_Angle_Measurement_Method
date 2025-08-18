@@ -6,4 +6,6 @@ This method computes the contact angle by fitting a plane to the rock-fluid inte
 
 To check if the library is working, first run the scrip "Example_Measurements.py".  It includes the functions which do the measurements and gives a flag if the measurements are not equal to the values expected (similar to a test).
 
+The description of the contact angle measurement method implemented can be found at: https://repositorio.ufsc.br/handle/123456789/266634
+
 Zevenbergen, Christoph Indiana. "A comparative analysis of automated contact angle measurement methods for x-ray microtomographic images of two-phase flow in porous media." (2025).
